@@ -7,12 +7,18 @@
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
-  "keywords": ["discord", "bot", "exact2026", "xai", "competition"],
+  "keywords": [
+    "discord",
+    "bot",
+    "exact2026",
+    "xai",
+    "competition"
+  ],
   "author": "EXACT 2026 Organising Committee",
   "license": "MIT",
   "dependencies": {
     "discord.js": "^14.17.0",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.6.1",
     "uuid": "^11.0.3"
   },
   "devDependencies": {

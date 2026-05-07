@@ -52,13 +52,36 @@ class TeamManager {
       name,
       leader: leaderTag,
       leaderId,
+      roleId: null,
+      voiceChannelId: null,
+      textChannelId: null,
       createdAt: new Date().toISOString(),
-      members: [{ id: leaderId, tag: leaderTag, joinedAt: new Date().toISOString() }],
+      members: [
+        {
+          id: leaderId,
+          tag: leaderTag,
+          joinedAt: new Date().toISOString(),
+        },
+      ],
     };
     this._db.teams.push(team);
     this._save();
     return team;
   }
+
+updateTeam(teamId, data) {
+  const team = this.getTeamById(teamId);
+
+  if (!team) {
+    throw new Error('Team not found');
+  }
+
+  Object.assign(team, data);
+
+  this._save();
+
+  return team;
+}
 
   /**
    * @param {string} teamId
@@ -74,9 +97,19 @@ class TeamManager {
   }
 
   /** @param {string} name @returns {boolean} */
+  normalizeTeamName(name) {
+    return name
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
   teamExists(name) {
+    const normalized = this.normalizeTeamName(name);
+
     return this._db.teams.some(
-      (t) => t.name.toLowerCase() === name.toLowerCase()
+      (t) =>
+        this.normalizeTeamName(t.name) === normalized
     );
   }
 
@@ -85,6 +118,45 @@ class TeamManager {
     return this._db.teams.find((t) =>
       t.members.some((m) => m.id === userId)
     );
+  }
+
+    /**
+   * Remove member from a team
+   * @param {string} teamId
+   * @param {string} userId
+   */
+  removeMemberFromTeam(teamId, userId) {
+    const team = this.getTeamById(teamId);
+
+    if (!team) {
+      throw new Error(`Team ${teamId} not found`);
+    }
+
+    team.members = team.members.filter((m) => m.id !== userId);
+
+    // Auto delete team if empty
+    if (team.members.length === 0) {
+      this._db.teams = this._db.teams.filter((t) => t.id !== teamId);
+    }
+
+    // If leader leaves → assign new leader
+    else if (team.leaderId === userId) {
+      const newLeader = team.members[0];
+
+      team.leaderId = newLeader.id;
+      team.leader = newLeader.tag;
+    }
+
+    this._save();
+  }
+
+  /**
+   * Delete a team completely
+   * @param {string} teamId
+   */
+  deleteTeam(teamId) {
+    this._db.teams = this._db.teams.filter((t) => t.id !== teamId);
+    this._save();
   }
 }
 

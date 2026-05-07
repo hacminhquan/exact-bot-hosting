@@ -19,12 +19,10 @@ function buildWelcomeEmbed(member, teams) {
   return new EmbedBuilder()
     .setColor(BRAND_BLUE)
     .setAuthor({
-      name: 'EXACT 2026 — Official Competition Server',
-      iconURL:
-        'https://cdn-icons-png.flaticon.com/512/1055/1055687.png', // trophy icon
+      name: 'EXACT 2026 - Official Competition Server',
     })
     .setTitle(
-      '🏛️  Welcome to EXACT 2026\n' +
+      'Welcome to EXACT 2026\n' +
       'The 2nd International XAI Challenge for Transparent Educational Question-Answering'
     )
     .setDescription(
@@ -35,50 +33,43 @@ function buildWelcomeEmbed(member, teams) {
         'This international event challenges teams worldwide to build AI systems that answer educational questions **accurately and transparently**.',
         '',
         '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
-        '**📌  Competition Overview**',
+        '**Competition Overview**',
         'EXACT 2026 tasks span **logic-based reasoning** over academic regulations and **STEM problem-solving** in physics and electric circuits. Your system must not only answer correctly — it must *explain* every response clearly and verifiably.',
         '',
-        '**🏢  Organised By**',
+        '**Organised By**',
         '▸ Ho Chi Minh City University of Technology (HCMUT), Vietnam',
         '▸ University of Naples Parthenope, Italy',
         '▸ Part of the **IEEE IJCNN 2026** Competition Program',
         '',
-        '**🪑  Challenge Chairs**',
+        '**Challenge Chairs**',
         '▸ Assoc. Prof. Quan Thanh Tho — HCMUT, Vietnam',
         '▸ Dr. Emanuel Di Nardo — Univ. of Naples Parthenope, Italy',
         '▸ Prof. Nguyen Duc Anh — Univ. of South-Eastern Norway',
         '▸ Assoc. Prof. Fabien Baldacci — Université de Bordeaux, France',
         '▸ Prof. Nguyen Le Minh — JAIST, Japan',
         '',
-        '**⚙️  Technical Requirements**',
+        '**Technical Requirements**',
         '▸ Only open-source LLMs with **≤ 8B parameters** are allowed',
         '▸ Closed-source models (GPT, Claude, Gemini, …) are **strictly prohibited**',
         '▸ Symbolic reasoning tools (Z3, custom solvers, …) are encouraged',
         '',
-        '**🏆  Prizes & Recognition**',
+        '**Prizes & Recognition**',
         '▸ **Top 5** — Cash prizes + invited presentation at CSoNet 2026 (Springer LNCS/LNAI)',
         '▸ **Top 10** — Invited paper to the "Explainable AI for Educational QA" special session',
         '▸ **All finishers** — Official certificate from the Challenge Chairs',
         '▸ **HCMUT-VNU students** — Training points awarded',
         '',
-        '**📅  Key Dates**',
+        '**Key Dates**',
         '▸ Team Registration — Apr 10 – **May 10, 2026**',
         '▸ Kick-off Workshop & Dataset Release — May 4, 2026',
         '▸ Main Competition Phase — May 5 – May 30, 2026',
         '▸ Top 10 Announcement — Jun 10, 2026',
         '▸ Public Test Day (live evaluation) — Jun 15, 2026',
         '▸ Presentation at CSoNet 2026 — Nov 16–18, 2026',
-        '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
-        '',
-        '👇  **To register, please use the buttons below.**',
-        `*Teams may have up to **5 members**. Registration closes on **May 10, 2026**.*`,
       ].join('\n')
     )
-    .setThumbnail(
-      'https://cdn-icons-png.flaticon.com/512/2920/2920072.png' // AI/brain icon
-    )
     .setFooter({
-      text: 'EXACT 2026 | IEEE IJCNN 2026 Competition Program • Registration Deadline: May 10, 2026',
+      text: 'EXACT 2026 | IEEE IJCNN 2026 Competition Program',
     })
     .setTimestamp();
 }
@@ -93,7 +84,7 @@ function buildWelcomeEmbed(member, teams) {
 function buildTeamTableEmbed(teams) {
   const embed = new EmbedBuilder()
     .setColor(BRAND_GOLD)
-    .setTitle('📋  EXACT 2026 — Team Registry')
+    .setTitle('EXACT 2026 — Team Registry')
     .setFooter({ text: `Last updated` })
     .setTimestamp();
 
@@ -101,8 +92,8 @@ function buildTeamTableEmbed(teams) {
     embed.setDescription(
       [
         '```',
-        '  No teams have been registered yet.',
-        '  Be the first — create your team now!',
+        'No teams have been registered yet.',
+        'Be the first — create your team now!',
         '```',
         '*A team table will appear here once the first team is registered.*',
       ].join('\n')
@@ -115,8 +106,8 @@ function buildTeamTableEmbed(teams) {
   const rows = teams.map((t, i) => ({
     num: String(i + 1).padStart(2),
     id: t.id,
-    name: truncate(t.name, 24),
-    leader: truncate(t.leader, 22),
+    name: truncate(t.name, 16),
+    leader: truncate(t.leader, 14),
     members: `${t.members.length}/5`,
     status: t.members.length >= 5 ? '🔒 Full' : '🟢 Open',
   }));
@@ -124,10 +115,10 @@ function buildTeamTableEmbed(teams) {
   const colWidths = {
     num:    2,
     id:     8,
-    name:   24,
-    leader: 22,
-    members: 5,
-    status: 7,
+    name:   16,
+    leader: 14,
+    members: 3,
+    status: 2,
   };
 
   const header =
@@ -158,7 +149,7 @@ function buildTeamTableEmbed(teams) {
 
   embed.setDescription(tableLines.join('\n'));
   embed.addFields({
-    name: '📊  Summary',
+    name: 'Summary',
     value:
       `**${teams.length}** team(s) registered · ` +
       `**${teams.reduce((s, t) => s + t.members.length, 0)}** participant(s) total`,
